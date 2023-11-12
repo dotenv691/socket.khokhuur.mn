@@ -37,7 +37,7 @@ io.use((socket, next) => {
 
 router.all('/qpay_response', function (req, res) {
   io.emit("send_message", { status: 200, success: true });
-  const order = (req.query?.OrderNo ?? 0) || (req.query?.orderNo ?? 0) || (req.query?.orderno ?? 0) || (req.query?.Orderno ?? 0);
+  const order = req.query?.OrderNo || req.query?.orderNo || req.query?.orderno || req.query?.Orderno
   io.to(1).emit("receive_message", { room: 1, message: parseInt(order) });
   res.send({
     status: 200,
