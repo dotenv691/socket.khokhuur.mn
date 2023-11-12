@@ -20,7 +20,7 @@ const server = https.createServer(credentials);
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'https://export.khokh-uur.mn/'],
+    origin:'*',
     methods: ["GET", "POST"],
   },
 });
