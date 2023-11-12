@@ -16,7 +16,12 @@ const certificate = fs.readFileSync('ssl/quick.crt', 'utf8');
 const intermediate = fs.readFileSync('ssl/quick.ca-bundle', 'utf8');
 const credentials = { key: privateKey, cert: certificate, ca: intermediate };
 
-const server = https.createServer(credentials);
+const server = https.createServer(credentials, function(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+});
 
 const io = new Server(server, {
   cors: {
