@@ -32,6 +32,7 @@ io.use((socket, next) => {
   }
   return next(new Error("Blocked by CORS"));
 });
+io.set('origins', 'https://export.khokh-uur.mn');
 
 
 io.on("connection", (socket) => {
