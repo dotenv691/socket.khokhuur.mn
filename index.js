@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
-const https = require("https");
-const fs = require("fs");
+const http = require("http");
+// const fs = require("fs");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
@@ -11,17 +11,12 @@ app.use(cors({
   credentials: true,
 }));
 
-const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
-const certificate = fs.readFileSync('ssl/quick.crt', 'utf8');
-const intermediate = fs.readFileSync('ssl/quick.ca-bundle', 'utf8');
-const credentials = { key: privateKey, cert: certificate, ca: intermediate };
+// const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
+// const certificate = fs.readFileSync('ssl/quick.crt', 'utf8');
+// const intermediate = fs.readFileSync('ssl/quick.ca-bundle', 'utf8');
+// const credentials = { key: privateKey, cert: certificate, ca: intermediate };
 
-const server = https.createServer(credentials, function(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-});
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
