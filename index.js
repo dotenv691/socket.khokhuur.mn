@@ -5,6 +5,11 @@ const fs = require("fs");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://export.khokh-uur.mn");
+  next();
+});
+
 app.use(cors());
 
 const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
