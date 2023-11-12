@@ -21,6 +21,16 @@ const io = new Server(server, {
   },
 });
 
+io.use((socket, next) => {
+  const allowedOrigins = ["http://localhost:3000", "https://export.khokh-uur.mn"];
+  const origin = socket.handshake.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    return next(null, true);
+  }
+  return next(new Error("Blocked by CORS"));
+});
+
+
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
