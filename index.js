@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const router = express.Router();
 const http = require("http");
 // const fs = require("fs");
 const { Server } = require("socket.io");
@@ -10,6 +11,7 @@ app.use(cors({
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
+app.use(router);
 
 // const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
 // const certificate = fs.readFileSync('ssl/quick.crt', 'utf8');
@@ -31,6 +33,16 @@ io.use((socket, next) => {
     return next(null, true);
   }
   return next(new Error("Blocked by CORS"));
+});
+
+router.all('/qpay_response', function (req, res) {
+  io.emit("send_message", { status: 200, success: true });
+  const order = (req.query?.OrderNo ?? 0) || (req.query?.orderNo ?? 0) || (req.query?.orderno ?? 0) || (req.query?.Orderno ?? 0);
+  io.to(1).emit("receive_message", { room: 1, message: parseInt(order) });
+  res.send({
+    status: 200,
+    success: true,
+  }).status(200);
 });
 
 
