@@ -10,7 +10,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://export.khokh-uur.mn',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Access-Control-Allow-Credentials header
+}));
 
 const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
 const certificate = fs.readFileSync('ssl/quick.crt', 'utf8');
