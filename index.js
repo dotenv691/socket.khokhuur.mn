@@ -5,15 +5,10 @@ const fs = require("fs");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://export.khokh-uur.mn");
-  next();
-});
-
 app.use(cors({
   origin: 'https://export.khokh-uur.mn',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Access-Control-Allow-Credentials header
+  credentials: true,
 }));
 
 const privateKey = fs.readFileSync('ssl/quick.key', 'utf8');
@@ -31,9 +26,8 @@ const io = new Server(server, {
 });
 
 io.use((socket, next) => {
-  const allowedOrigins = ["http://localhost:3000", "https://export.khokh-uur.mn"];
   const origin = socket.handshake.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+  if (origin === 'https://export.khokh-uur.mn' || origin === 'http://localhost:3000') {
     return next(null, true);
   }
   return next(new Error("Blocked by CORS"));
